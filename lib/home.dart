@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:flutter_phone_contacts/single_contact_list.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -20,7 +23,11 @@ class _MyHomePageState extends State<MyHomePage> {
         _permissionDenied = true;
       });
     } else {
-      final contacts = await FlutterContacts.getContacts();
+      // final contacts = await FlutterContacts.getContacts(); // just name
+      final contacts = await FlutterContacts.getContacts(
+        withProperties: true,
+        withPhoto: true,
+      );
       setState(() {
         _contacts = contacts;
       });
@@ -47,9 +54,20 @@ class _MyHomePageState extends State<MyHomePage> {
               ? const Center(child: CircularProgressIndicator())
               : ListView.builder(
                 itemCount: _contacts!.length,
-                itemBuilder:
-                    (context, i) =>
-                        ListTile(title: Text(_contacts![i].displayName)),
+                itemBuilder: (context, index) {
+                  Uint8List? photo = _contacts![index].photo;
+                  String number =
+                      (_contacts![index].phones.isNotEmpty)
+                          ? (_contacts![index].phones.first.number)
+                          : "--";
+                  return SingleContactInList(
+                    _contacts![index].displayName,
+                    (_contacts![index].photo == null)
+                        ? const CircleAvatar(child: Icon(Icons.person))
+                        : CircleAvatar(backgroundImage: MemoryImage(photo!)),
+                    number,
+                  );
+                },
               ),
     );
   }
