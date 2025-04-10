@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactDetailsScreen extends StatelessWidget {
   final String name;
@@ -120,6 +121,71 @@ class ContactDetailsScreen extends StatelessWidget {
                       ).colorScheme.onSurface.withOpacity(0.95),
                     ),
                     textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.phone, size: 36),
+                onPressed: () async {
+                  final uri = Uri(scheme: 'tel', path: number);
+                  if (await canLaunchUrl(uri)) {
+                    await launchUrl(uri);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Can not call...')),
+                    );
+                  }
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(
+                    Theme.of(context).colorScheme.primaryContainer,
+                  ),
+                  foregroundColor: MaterialStatePropertyAll(
+                    Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+                  shape: MaterialStatePropertyAll(const CircleBorder()),
+                  padding: const MaterialStatePropertyAll(EdgeInsets.all(16)),
+                  elevation: const MaterialStatePropertyAll(6),
+                  shadowColor: MaterialStatePropertyAll(
+                    Theme.of(context).colorScheme.primary.withOpacity(0.4),
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.message, size: 36),
+                onPressed: () async {
+                  final uri = Uri(scheme: 'sms', path: number);
+                  if (await canLaunchUrl(uri)) {
+                    await launchUrl(uri);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Nie można wysłać SMS')),
+                    );
+                  }
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(
+                    Theme.of(context).colorScheme.primaryContainer,
+                  ),
+                  foregroundColor: MaterialStatePropertyAll(
+                    Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+                  shape: MaterialStatePropertyAll(const CircleBorder()),
+                  padding: const MaterialStatePropertyAll(EdgeInsets.all(16)),
+                  elevation: const MaterialStatePropertyAll(6),
+                  shadowColor: MaterialStatePropertyAll(
+                    Theme.of(context).colorScheme.primary.withOpacity(0.4),
                   ),
                 ),
               ),
