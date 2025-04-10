@@ -43,10 +43,35 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80),
+        child: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          elevation: 4,
+          centerTitle: true,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(24),
+            ),
+          ),
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.contacts, size: 28),
+              const SizedBox(width: 8),
+              Text(
+                widget.title,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontFamily: 'Raleway',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
+
       body:
           _permissionDenied
               ? const Center(child: Text("Permission denied"))
