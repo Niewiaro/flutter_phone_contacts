@@ -43,7 +43,14 @@ class _MyHomePageState extends State<MyHomePage> {
       body:
           _permissionDenied
               ? const Center(child: Text("Permission denied"))
-              : const Center(child: Text("Permission granted")),
+              : (_contacts == null)
+              ? const Center(child: CircularProgressIndicator())
+              : ListView.builder(
+                itemCount: _contacts!.length,
+                itemBuilder:
+                    (context, i) =>
+                        ListTile(title: Text(_contacts![i].displayName)),
+              ),
     );
   }
 }
